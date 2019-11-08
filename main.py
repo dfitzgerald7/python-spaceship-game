@@ -1,5 +1,5 @@
 import pygame
- 
+from pygame.locals import *
 # define a main function
 def main():
      
@@ -16,16 +16,30 @@ def main():
     #spaceship coords 
     x = 250
     y = 250
-    stepX = 1
-    stepY = 1
+    stepX = 0
+    stepY = 0
 
     # define a variable to control the main loop
     running = True
      
     # main loop
     while running:
-
-
+        
+        keys=pygame.key.get_pressed()
+        
+        if keys[K_LEFT]:
+            stepX = -1    
+        elif keys[K_RIGHT]:
+            stepX = 1
+        elif keys[K_UP]:
+            stepY = -1
+        else:
+            if stepY < 0:
+                stepY += .01
+            if stepX > 0:
+                stepX -= .01
+            if stepX < 0:
+                stepX += .01
         # event handling, gets all event from the event queue
         screen.fill((0,0,0))
         screen.blit(spaceship, (x,y))
