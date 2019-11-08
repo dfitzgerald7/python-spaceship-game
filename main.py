@@ -1,6 +1,10 @@
 import pygame
 from pygame.locals import *
 # define a main function
+
+def getCartStep(x, y, angle):
+    pass
+
 def main():
      
     # initialize the pygame module
@@ -14,10 +18,10 @@ def main():
     spaceship = pygame.transform.scale(spaceship, (40,40))
     
     #spaceship coords 
-    x = 250
-    y = 250
+    myVector = pygame.math.Vector2(-10,0)
     stepX = 0
-    stepY = 0
+    stepy = 0
+    angle = 0
 
     # define a variable to control the main loop
     running = True
@@ -28,21 +32,24 @@ def main():
         keys=pygame.key.get_pressed()
         
         if keys[K_LEFT]:
-            stepX = -1    
+            pass
         elif keys[K_RIGHT]:
-            stepX = 1
+            pass
         elif keys[K_UP]:
-            stepY = -1
+            myVector[1] -= 1
         else:
-            if stepY < 0:
-                stepY += .01
-            if stepX > 0:
+            if myVector[1] < 0:
+                myVector.update(myVector[0], m)
+            if myVector[0] > 0:
                 stepX -= .01
-            if stepX < 0:
+            if myVector < 0:
                 stepX += .01
         # event handling, gets all event from the event queue
+
+        #draw ship
         screen.fill((0,0,0))
-        screen.blit(spaceship, (x,y))
+        screen.blit(rotatedSpaceship, (myVector))
+        
         x += stepX; y += stepY 
         pygame.display.flip()
         for event in pygame.event.get():
