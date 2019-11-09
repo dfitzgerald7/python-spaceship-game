@@ -7,6 +7,13 @@ def rotateAndNormalize(vector, angleStep):
     rotated = vector.rotate(angleStep)
     return pygame.math.Vector2.normalize(rotated)
 
+def rot_center(image, angle):
+
+    center = image.get_rect().center
+    rotated_image = pygame.transform.rotate(image, angle)
+    new_rect = rotated_image.get_rect(center = center)
+
+    return rotated_image, new_rect
 
 
 def main():
@@ -15,11 +22,12 @@ def main():
     pygame.init()
     # load and set the log     
     # create a surface on screen that has the size of 240 x 180
-    screen = pygame.display.set_mode((500,500))
+    screen = pygame.display.set_mode((1000,1000))
     
     # add spaceship
     spaceship = pygame.image.load("spaceship.jpg")
     spaceship = pygame.transform.scale(spaceship, (40,40))
+    spaceshipRect = spaceship.get_rect()
     
     #spaceship coords 
     x = 250
@@ -29,6 +37,11 @@ def main():
     magnitude = .1
     angle = 0
     angleStep = 0
+    vectorAngle = 0
+    center_offsetX = -1 * spaceshipRect.width/2 
+    center_offsetY = spaceshipRect.height/2
+    print(spaceshipRect)
+    print(center_offsetX, center_offsetY)
 
     # define a variable to control the main loop
     running = True
@@ -39,14 +52,16 @@ def main():
         # angleStep = 0
         keys=pygame.key.get_pressed()
         
-        if keys[K_LEFT] or keys[K_RIGHT]:
+        if keys[K_LEFT] or keys[K_RIGHT]: 
             if keys[K_LEFT]:
-                angleStep += 10
+                angleStep += 5
+                vectorAngle -= 3
             else: 
-                angleStep -= 10
-            newVector = rotateAndNormalize(myVector, -1 * angleStep)
+                angleStep -= 5
+                vectorAngle += 3
+            newVector = rotateAndNormalize(myVector, vectorAngle)
             
-        elif keys[K_UP]:
+        if keys[K_UP]: #only add vectors if rockets are fired
             myVector += newVector
 
         #movement is constant due to no friction
@@ -63,7 +78,7 @@ def main():
         pygame.draw.line(screen, (0,0,225), (x,y), (x + 50*myVector[0], y + 50*myVector[1]))
         pygame.draw.line(screen, (0,225,0), (x,y), (x + 50*newVector[0],y + 50*newVector[1]))
         rotatedSpaceship = pygame.transform.rotate(spaceship, angle+angleStep)
-        screen.blit(rotatedSpaceship, (x, y))
+        screen.blit(rotatedSpaceship, (x + center_offsetX, y + center_offsetY))
         pygame.display.flip()
 
 

@@ -6,3 +6,6 @@ store x and y seperately, get stepX and stepY from normalized vector
 
 if keys left or right get pressed, rotate the vector accordingly
 if up key gets pressed, add vectors
+
+the longer the up key is pressed, the more the angle jumps
+INVESTIGATE
