@@ -1,9 +1,13 @@
 import pygame
 from pygame.locals import *
+import time
 # define a main function
 
-def getCartStep(x, y, angle):
-    pass
+def rotateAndNormalize(vector, angleStep):
+    rotated = vector.rotate(angleStep)
+    return pygame.math.Vector2.normalize(rotated)
+
+
 
 def main():
      
@@ -18,40 +22,51 @@ def main():
     spaceship = pygame.transform.scale(spaceship, (40,40))
     
     #spaceship coords 
-    myVector = pygame.math.Vector2(-10,0)
-    stepX = 0
-    stepy = 0
+    x = 250
+    y = 250
+    myVector = pygame.math.Vector2(0,-1)
+    newVector = pygame.math.Vector2(0,0)
+    magnitude = .1
     angle = 0
+    angleStep = 0
 
     # define a variable to control the main loop
     running = True
      
     # main loop
     while running:
-        
+        # time.sleep(1)
+        # angleStep = 0
         keys=pygame.key.get_pressed()
         
-        if keys[K_LEFT]:
-            pass
-        elif keys[K_RIGHT]:
-            pass
+        if keys[K_LEFT] or keys[K_RIGHT]:
+            if keys[K_LEFT]:
+                angleStep += 10
+            else: 
+                angleStep -= 10
+            newVector = rotateAndNormalize(myVector, -1 * angleStep)
+            
         elif keys[K_UP]:
-            myVector[1] -= 1
-        else:
-            if myVector[1] < 0:
-                myVector.update(myVector[0], m)
-            if myVector[0] > 0:
-                stepX -= .01
-            if myVector < 0:
-                stepX += .01
+            myVector += newVector
+
+        #movement is constant due to no friction
+        x += magnitude * myVector[0]
+        y += magnitude * myVector[1] 
         # event handling, gets all event from the event queue
+
+        #rotate vector, normalize and get x and y coords to be used with magnitude
+
+
 
         #draw ship
         screen.fill((0,0,0))
-        screen.blit(rotatedSpaceship, (myVector))
-        
-        x += stepX; y += stepY 
+        pygame.draw.line(screen, (0,0,225), (x,y), (x + 50*myVector[0], y + 50*myVector[1]))
+        pygame.draw.line(screen, (0,225,0), (x,y), (x + 50*newVector[0],y + 50*newVector[1]))
+        rotatedSpaceship = pygame.transform.rotate(spaceship, angle+angleStep)
+        screen.blit(rotatedSpaceship, (x, y))
         pygame.display.flip()
+
+
         for event in pygame.event.get():
             # only do something if the event is of type QUIT
             if event.type == pygame.QUIT:

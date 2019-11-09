@@ -1,0 +1,8 @@
+keep vector pointed based on direction,
+normalize that vector, 
+store x and y seperately, get stepX and stepY from normalized vector
+
+
+
+if keys left or right get pressed, rotate the vector accordingly
+if up key gets pressed, add vectors
